@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SpaceX HQ | Membership Portal</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         :root {
             --bg: #050505;
@@ -108,7 +110,7 @@
         }
 
         .stat-item span { display: block; font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; margin-bottom: 6px; }
-        .stat-item strong { font-size: 15px; font-family: 'JetBrains Mono', monospace; font-weight: 500; }
+        .stat-item strong { font-size: 15px; font-family: 'JetBrains Mono', monospace; font-weight: 500; display: flex; align-items: center; gap: 6px; }
 
         /* ── Full Width Ecosystem Cards ── */
         .section-label {
@@ -145,6 +147,20 @@
             background-color: rgba(12, 12, 12, 0.98);
             transform: translateY(-2px);
         }
+
+        /* Card Loader Overlay */
+        .locked-card .card-loader {
+            position: absolute;
+            inset: 0;
+            background: rgba(5, 5, 5, 0.8);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .locked-card.is-loading .card-loader { display: flex; }
 
         .card-header {
             display: flex;
@@ -332,7 +348,7 @@
         }
         .payment-row { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 14px; }
         .payment-row span:first-child { color: var(--muted); }
-        .payment-row strong { font-family: 'JetBrains Mono', monospace; }
+        .payment-row strong { font-family: 'JetBrains Mono', monospace; display: flex; align-items: center; gap: 6px; }
 
         .paypal-btn {
             background: #FFC439;
@@ -352,9 +368,15 @@
         }
         .paypal-btn:hover { background: #f2ba32; }
 
+        /* Animations */
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); } 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
+
+        .animate-spin-slow {
+            animation: spin-slow 2s linear infinite;
+        }
 
         .screen { display: none; }
         .screen.active { display: block; }
@@ -374,13 +396,13 @@
                     <div class="status-indicator"></div>
                 </div>
                 <div class="profile-info">
-                    <h1>Mimi  Phanthouhem</h1>
+                    <h1>Mimi Phanthouhem</h1>
                     <p class="subtitle">Strategic Advisor • <span style="color:var(--pending)">Level 1 Applicant</span></p>
                     <p class="joined-date">Since May 2025</p>
                 </div>
                 <div class="profile-stats">
                     <div class="stat-item"><span>Clearance</span><strong>INTERNAL</strong></div>
-                    <div class="stat-item"><span>Status</span><strong style="color:var(--pending)">PENDING</strong></div>
+                    <div class="stat-item"><span>Status</span><strong style="color:var(--pending)">PENDING <i data-lucide="refresh-cw" class="animate-spin-slow" style="width:12px; height:12px;"></i></strong></div>
                     <div class="stat-item"><span>System Time</span><strong id="live-clock">00:00:00</strong></div>
                 </div>
             </div>
@@ -389,9 +411,12 @@
         <div class="section-label">Restricted Ecosystem Assets</div>
         <div class="locked-grid">
             <div class="locked-card" onclick="handleUpgradeClick(this)">
+                <div class="card-loader">
+                    <div class="loading-spinner" style="display:block; width:24px; height:24px;"></div>
+                </div>
                 <div class="card-header">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/b/bd/Tesla_Motors.svg" alt="Tesla" class="cdn-logo" style="filter: brightness(0) invert(1);">
-                    <div class="lock-status">🔒 Locked</div>
+                    <div class="lock-status"><i data-lucide="lock" style="width:12px; height:12px;"></i> Locked</div>
                 </div>
                 <h4>Monthly Profits</h4>
                 <p>Automated equity dividends distributed directly to your authenticated wallet monthly.</p>
@@ -399,9 +424,12 @@
             </div>
             
             <div class="locked-card" onclick="handleUpgradeClick(this)">
+                <div class="card-loader">
+                    <div class="loading-spinner" style="display:block; width:24px; height:24px;"></div>
+                </div>
                 <div class="card-header">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/b/bd/Tesla_Motors.svg" alt="Tesla T" class="cdn-logo" style="filter: brightness(0) saturate(100%) invert(21%) sepia(100%) saturate(6414%) hue-rotate(354deg) brightness(92%) contrast(100%);">
-                    <div class="lock-status">🔒 Locked</div>
+                    <div class="lock-status"><i data-lucide="lock" style="width:12px; height:12px;"></i> Locked</div>
                 </div>
                 <h4>Private Meeting</h4>
                 <p>Personal 1-on-1 strategy session with Elon Musk to discuss mission alignment.</p>
@@ -409,9 +437,12 @@
             </div>
 
             <div class="locked-card" onclick="handleUpgradeClick(this)">
+                <div class="card-loader">
+                    <div class="loading-spinner" style="display:block; width:24px; height:24px;"></div>
+                </div>
                 <div class="card-header">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/b/bd/Tesla_Motors.svg" alt="Tesla" class="cdn-logo" style="filter: brightness(0) invert(1);">
-                    <div class="lock-status">🔒 Locked</div>
+                    <div class="lock-status"><i data-lucide="lock" style="width:12px; height:12px;"></i> Locked</div>
                 </div>
                 <h4>Tesla AI Day</h4>
                 <p>VIP front-row passes to upcoming AI and Robotaxi reveal events at Gigafactory Texas.</p>
@@ -419,9 +450,12 @@
             </div>
 
             <div class="locked-card" onclick="handleUpgradeClick(this)">
+                <div class="card-loader">
+                    <div class="loading-spinner" style="display:block; width:24px; height:24px;"></div>
+                </div>
                 <div class="card-header">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/2/2e/SpaceX_logo_black.svg" alt="SpaceX" class="cdn-logo" style="filter: brightness(0) invert(1);">
-                    <div class="lock-status">🔒 Locked</div>
+                    <div class="lock-status"><i data-lucide="lock" style="width:12px; height:12px;"></i> Locked</div>
                 </div>
                 <h4>Starbase Entry</h4>
                 <p>Full mission control clearance for the next Starship orbital flight test at Boca Chica.</p>
@@ -548,7 +582,7 @@
             </div>
             <div class="payment-row">
                 <span>Security Status</span>
-                <strong style="color:var(--pending)">PENDING</strong>
+                <strong style="color:var(--pending)">PENDING <i data-lucide="refresh-cw" class="animate-spin-slow" style="width:14px; height:14px;"></i></strong>
             </div>
             <div style="border-top: 1px solid var(--border); margin: 16px 0; padding-top: 16px;" class="payment-row">
                 <span>Total Amount Due</span>
@@ -569,6 +603,9 @@
 </div>
 
 <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
     let selectedTierData = { name: '', price: '' };
 
     function updateClock() {
@@ -597,14 +634,23 @@
         el.classList.add('expanded');
     }
 
-    function handleUpgradeClick(btn) {
-        const targetBtn = btn.id === 'initial-upgrade-btn' ? btn : document.getElementById('initial-upgrade-btn');
-        targetBtn.classList.add('is-loading');
-        targetBtn.disabled = true;
+    function handleUpgradeClick(element) {
+        // If clicking a card, show loader on that card
+        if (element.classList.contains('locked-card')) {
+            element.classList.add('is-loading');
+        } else {
+            // If clicking the button, show loader on the button
+            element.classList.add('is-loading');
+            element.disabled = true;
+        }
 
         setTimeout(() => {
-            targetBtn.classList.remove('is-loading');
-            targetBtn.disabled = false;
+            // Reset loaders
+            document.querySelectorAll('.locked-card').forEach(c => c.classList.remove('is-loading'));
+            const mainBtn = document.getElementById('initial-upgrade-btn');
+            mainBtn.classList.remove('is-loading');
+            mainBtn.disabled = false;
+            
             changeScreen(1);
         }, 1500);
     }
@@ -632,6 +678,8 @@
                 document.getElementById('summary-tier').textContent = selectedTierData.name;
                 document.getElementById('summary-price').textContent = selectedTierData.price;
                 changeScreen(3);
+                // Refresh icons for dynamic content
+                lucide.createIcons();
             }, 5050);
         }, 1500);
     }
